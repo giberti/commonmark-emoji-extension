@@ -1,0 +1,22 @@
+{
+    "name": "giberti/commonmark-emoji-extension",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.3",
+        "league/commonmark": "^1.5"
+    },
+    "require": {
+        "php": "^7.2",
+        "giberti/emoji-data": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Giberti\\EmojiExtension\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit"
+        ]
+    }
+}
