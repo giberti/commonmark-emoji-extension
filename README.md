@@ -4,6 +4,10 @@ An extension to provide support for converting GitHub and Slack flavored emoji s
 By default, it will substitute official [unicode CLDR short names](http://unicode.org/emoji/charts/full-emoji-list.html) for the emoji, but can also use aliases to map common language to the official name.
 The generated output wraps the emoji in a `<span>` to permit additional styling and provides a `title` attribute for usability.
 
+## Quality
+
+[![Build Status](https://travis-ci.com/giberti/commonmark-emoji-extension.svg?branch=master)](https://travis-ci.com/giberti/commonmark-emoji-extension)
+
 ### Installing
 
 ```
