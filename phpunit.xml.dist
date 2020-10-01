@@ -5,13 +5,8 @@
         bootstrap="vendor/autoload.php"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
   >
-  <coverage>
-    <include>
-      <directory suffix=".php">./src/</directory>
-    </include>
-  </coverage>
   <testsuites>
-    <testsuite name="lib">
+    <testsuite name="test library">
       <directory>./tests/</directory>
     </testsuite>
   </testsuites>
