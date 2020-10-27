@@ -44,15 +44,14 @@ class EmojiParser implements InlineParserInterface
         }
 
         $emoji = $this->getEmoji($handle);
-        if (!$emoji) {
-            $cursor->restoreState($previousState);
-
-            return false;
+        if ($emoji) {
+            $node = new Span($this->getTitle($handle));
+            $node->appendChild(new Text($emoji));
+        } else {
+            $node = new Text($handle);
         }
 
-        $span = new Span($this->getTitle($handle));
-        $span->appendChild(new Text($emoji));
-        $inlineContext->getContainer()->appendChild($span);
+        $inlineContext->getContainer()->appendChild($node);
 
         return true;
     }

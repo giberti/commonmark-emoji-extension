@@ -66,7 +66,11 @@ class EmojiExtensionTest extends TestCase
             'non-valid emoji just appear as normal strings' => [
                 'Just :show-the-unaltered-value: inline.',
                 '<p>Just :show-the-unaltered-value: inline.</p>',
-            ]
+            ],
+            'text is not swallowed' => [
+                ":smile: you're on candid :camera:",
+                '<p>:smile: you\'re on candid <span class="emoji" title="camera">📷</span></p>',
+            ],
         ];
     }
 
@@ -75,7 +79,7 @@ class EmojiExtensionTest extends TestCase
      * @param $source
      * @param $expected
      */
-    public function test ($source, $expected) {
+    public function test($source, $expected) {
         $parser = $this->getParser();
         $this->assertEquals(
             $expected . PHP_EOL,
