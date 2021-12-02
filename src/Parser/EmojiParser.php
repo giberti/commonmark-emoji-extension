@@ -11,7 +11,7 @@ use League\CommonMark\InlineParserContext;
 
 class EmojiParser implements InlineParserInterface
 {
-    private const REGEX = '/:[_-a-zA-Z0-9]{2,}:/i';
+    private const REGEX = '/^:[_-a-zA-Z0-9]{2,}:/i';
 
     private $alternateMapping;
 
@@ -44,13 +44,14 @@ class EmojiParser implements InlineParserInterface
         }
 
         $emoji = $this->getEmoji($handle);
-        if ($emoji) {
-            $node = new Span($this->getTitle($handle));
-            $node->appendChild(new Text($emoji));
-        } else {
-            $node = new Text($handle);
+        if (!$emoji) {
+            $cursor->restoreState($previousState);
+
+	    return false;
         }
 
+        $node = new Span($this->getTitle($handle));
+        $node->appendChild(new Text($emoji));
         $inlineContext->getContainer()->appendChild($node);
 
         return true;
