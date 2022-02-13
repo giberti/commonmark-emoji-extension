@@ -71,6 +71,10 @@ class EmojiExtensionTest extends TestCase
                 ":smile: you're on candid :camera:",
                 '<p>:smile: you\'re on candid <span class="emoji" title="camera">📷</span></p>',
             ],
+            'text is not swallowed when using colon as punctuation' => [
+                "line: 1\nlost line: 2\nother text\nthen :hot_beverage:",
+                "<p>line: 1<br />lost line: 2<br />other text<br />then " . '<span class="emoji" title="hot_beverage">☕</span></p>',
+            ]
         ];
     }
 
