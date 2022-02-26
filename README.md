@@ -1,8 +1,8 @@
 # CommonMark Emoji Extension
 
-An extension to provide support for converting GitHub and Slack flavored emoji support to the [League CommonMark package](https://commonmark.thephpleague.com/).
+An extension to provide GitHub and Slack style emoji for the [League CommonMark package](https://commonmark.thephpleague.com/).
 By default, it will substitute official [unicode CLDR short names](http://unicode.org/emoji/charts/full-emoji-list.html) for the emoji, but can also use aliases to map common language to the official name.
-The generated output wraps the emoji in a `<span>` to permit additional styling and provides a `title` attribute for usability.
+The generated output wraps the emoji in a `<span>` to permit additional styling and provides a `title` attribute for accessibility.
 
 ## Quality
 
@@ -26,12 +26,13 @@ To use, add a new instance of `EmojiExtension` to the CommonMark environment and
 
 ```php
 // Get a configured instance of the converter
-$environment = Environment::createCommonMarkEnvironment();
-$environment->addExtension(new EmojiExtension());
-$converter = new CommonMarkConverter([], $environment);
+$environment = new \League\CommonMark\Environment\Environment();
+$environment->addExtension(new \League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension());
+$environment->addExtension(new \Giberti\EmojiExtension\EmojiExtension());
+$converter = new \League\CommonMark\MarkdownConverter($environment);
 
 // <p>I can haz <span class="emoji" title="hot_beverage">☕</span>?</p>
-echo $converter->convertToHtml('I can haz :hot_beverage:?');
+echo $converter->convert('I can haz :hot_beverage:?')->getContent();
 ```
 
 ### Providing Aliases
@@ -48,10 +49,11 @@ $aliases = [
 ];
 
 // Get a configured instance of the converter
-$environment = Environment::createCommonMarkEnvironment();
-$environment->addExtension(new EmojiExtension($aliases));
-$converter = new CommonMarkConverter([], $environment);
+$environment = new \League\CommonMark\Environment\Environment();
+$environment->addExtension(new \League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension());
+$environment->addExtension(new \Giberti\EmojiExtension\EmojiExtension($aliases));
+$converter = new \League\CommonMark\MarkdownConverter($environment);
 
 // <p>I can haz <span class="emoji" title="coffee">☕</span>?</p>
-echo $converter->convertToHtml('I can haz :coffee:?');
+echo $converter->convert('I can haz :coffee:?')->getContent();
 ```

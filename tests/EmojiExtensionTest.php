@@ -1,22 +1,25 @@
 <?php
 
 use Giberti\EmojiExtension\EmojiExtension;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use PHPUnit\Framework\TestCase;
 
 class EmojiExtensionTest extends TestCase
 {
-    protected function getParser(): CommonMarkConverter
+    protected function getParser(): MarkdownConverter
     {
         $mapping = [
             ':coffee:' => ':hot_beverage:',
             ':wave:' => ':waving_hand:',
         ];
-        $environment = Environment::createCommonMarkEnvironment();
+
+        $environment = new Environment();
+        $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new EmojiExtension($mapping));
 
-        return new CommonMarkConverter([], $environment);
+        return new MarkdownConverter($environment);
     }
 
     /**
@@ -87,7 +90,7 @@ class EmojiExtensionTest extends TestCase
         $parser = $this->getParser();
         $this->assertEquals(
             $expected . PHP_EOL,
-            $parser->convertToHtml($source),
+            $parser->convert($source)->getContent(),
             'Parser generated unexpected output for: "' . $source . '"'
         );
     }

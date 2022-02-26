@@ -5,13 +5,14 @@ namespace Giberti\EmojiExtension\Parser;
 
 use Giberti\EmojiData\Mappings;
 use Giberti\EmojiExtension\Element\Span;
-use League\CommonMark\Inline\Element\Text;
-use League\CommonMark\Inline\Parser\InlineParserInterface;
-use League\CommonMark\InlineParserContext;
+use League\CommonMark\Node\Inline\Text;
+use League\CommonMark\Parser\Inline\InlineParserInterface;
+use League\CommonMark\Parser\Inline\InlineParserMatch;
+use League\CommonMark\Parser\InlineParserContext;
 
 class EmojiParser implements InlineParserInterface
 {
-    private const REGEX = '/^:[_-a-zA-Z0-9]{2,}:/i';
+    private const REGEX = ':[_-a-zA-Z0-9]{2,}:';
 
     private $alternateMapping;
 
@@ -20,12 +21,9 @@ class EmojiParser implements InlineParserInterface
         $this->alternateMapping = $alternateMapping;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCharacters(): array
+    public function getMatchDefinition(): InlineParserMatch
     {
-        return [':'];
+        return InlineParserMatch::regex(self::REGEX);
     }
 
     /**
@@ -34,15 +32,9 @@ class EmojiParser implements InlineParserInterface
     public function parse(InlineParserContext $inlineContext): bool
     {
         $cursor = $inlineContext->getCursor();
-
         $previousState = $cursor->saveState();
-        $handle = $cursor->match(self::REGEX);
-        if (!$handle) {
-            $cursor->restoreState($previousState);
 
-            return false;
-        }
-
+        $handle = $inlineContext->getFullMatch();
         $emoji = $this->getEmoji($handle);
         if (!$emoji) {
             $cursor->restoreState($previousState);
@@ -50,9 +42,18 @@ class EmojiParser implements InlineParserInterface
             return false;
         }
 
-        $node = new Span($this->getTitle($handle));
-        $node->appendChild(new Text($emoji));
-        $inlineContext->getContainer()->appendChild($node);
+        $span = new Span();
+        $span->data->set(
+            'attributes',
+            [
+                'class' => 'emoji',
+                'title' => $this->getTitle($handle),
+            ]
+        );
+        $span->appendChild(new Text($emoji));
+
+        $cursor->advanceBy($inlineContext->getFullMatchLength());
+        $inlineContext->getContainer()->appendChild($span);
 
         return true;
     }
