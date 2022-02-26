@@ -3,10 +3,8 @@
 namespace Giberti\EmojiExtension;
 
 use Giberti\EmojiExtension\Parser\EmojiParser;
-use Giberti\EmojiExtension\Element;
-use Giberti\EmojiExtension\Renderer;
-use League\CommonMark\ConfigurableEnvironmentInterface;
 use League\CommonMark\Extension\ExtensionInterface;
+use League\CommonMark\Environment\EnvironmentBuilderInterface;
 
 final class EmojiExtension implements ExtensionInterface
 {
@@ -17,11 +15,9 @@ final class EmojiExtension implements ExtensionInterface
         $this->alternateMapping = $alternateMapping;
     }
 
-    public function register(ConfigurableEnvironmentInterface $environment)
+    public function register(EnvironmentBuilderInterface $environment): void
     {
-        $environment->addInlineRenderer(Element\Span::class, new Renderer\Span(), 0);
         $environment->addInlineParser(new EmojiParser($this->alternateMapping), 0);
+        $environment->addRenderer(Element\Span::class, new Renderer\Span(), 0);
     }
-
-
 }

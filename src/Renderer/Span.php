@@ -3,29 +3,29 @@ declare(strict_types=1);
 
 namespace Giberti\EmojiExtension\Renderer;
 
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
 
-class Span implements InlineRendererInterface
+class Span implements NodeRendererInterface
 {
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function render(Node $inline, ChildNodeRendererInterface $htmlRenderer)
     {
-        $attributes = [
-            'class' => 'emoji',
-        ];
-        $title = $inline->getData('title');
-        if ($title) {
-            $attributes['title'] = $title;
-        }
+        $attributes = array_merge(
+            $inline->data->export()['attributes'],
+            [
+                'class' => 'emoji',
+            ]
+        );
 
         return new HtmlElement(
             'span',
             $attributes,
-            $htmlRenderer->renderInlines(
+            $htmlRenderer->renderNodes(
                 $inline->children()
-            )
+            ),
+            false
         );
     }
 }
