@@ -8,7 +8,7 @@
         "league/commonmark": "^2.2"
     },
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "giberti/emoji-data": "^1.1"
     },
     "autoload": {
