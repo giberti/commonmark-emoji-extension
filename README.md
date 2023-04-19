@@ -6,7 +6,7 @@ The generated output wraps the emoji in a `<span>` to permit additional styling 
 
 ## Quality
 
-[![Build Status](https://travis-ci.com/giberti/commonmark-emoji-extension.svg?branch=master)](https://travis-ci.com/github/giberti/commonmark-emoji-extension)
+[![Build and Test](https://github.com/giberti/commonmark-emoji-extension/actions/workflows/test-php.yml/badge.svg)](https://github.com/giberti/commonmark-emoji-extension/actions/workflows/test-php.yml)
 
 ### Installing
 
