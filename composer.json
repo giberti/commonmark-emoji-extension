@@ -9,7 +9,7 @@
     },
     "require": {
         "php": "^7.4|^8.0",
-        "giberti/emoji-data": "^1.2"
+        "giberti/emoji-data": "^1.3"
     },
     "autoload": {
         "psr-4": {
