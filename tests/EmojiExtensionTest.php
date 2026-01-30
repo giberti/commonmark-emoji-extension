@@ -27,7 +27,7 @@ class EmojiExtensionTest extends TestCase
      *
      * @return array
      */
-    public function getSourceAndExpectedOutputs(): array
+    public static function getSourceAndExpectedOutputs(): array
     {
         return [
             'simple' => [
